@@ -1,0 +1,52 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 17
+    buildToolsVersion '19.0.1'
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    sourceSets {
+        // using this seems to cause the "Default Activity not found error"
+        // although this path, src/main/java, seems to work
+        //main.java.srcDirs = ['src/main/java']
+        main.jniLibs.srcDirs = ['../libs']
+        // this works too if wrapped in main { .. }
+        //jniLibs.srcDir '../libs'
+    }
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 18
+        versionCode 1
+        versionName "1.0"
+    }
+
+    productFlavors {
+        x86 {
+            ndk {
+                abiFilter "x86"
+            }
+        }
+        arm {
+            ndk {
+                abiFilter "armeabi-v7a"
+            }
+        }
+        mips {
+            ndk {
+                abiFilter "mips"
+            }
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:+'
+    compile fileTree(dir: 'jar-libs', include: ['*.jar'])
+}
